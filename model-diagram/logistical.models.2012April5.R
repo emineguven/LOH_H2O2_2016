@@ -89,7 +89,7 @@ points( Tb, (b.max+b.min)/2, pch=19, col="green", cex=1.2 );
 arrows( Tb, (b.max+b.min)/2, Tb, -1, lty=2, col="green", lwd=3);
 mtext( "Cb",side=1,at=c(Tb) );
 
-Tg = 5.5
+Tg = 6.9
 Tc = 5
 w = 5;
 b.max = 0.04; b.min = 0.002;

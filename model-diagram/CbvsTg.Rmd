@@ -143,7 +143,7 @@ mtext( "Cb",side=1,at=c(Tb) );
 
 
 
-Tg = 5.5
+Tg = 6.9
 Tc = 5
 w = 5;
 b.max = 0.04; b.min = 0.002;
