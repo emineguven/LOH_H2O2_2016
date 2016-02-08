@@ -22,10 +22,7 @@ Partial correlations are all negative, what does this mean? Of couse, they shoul
  Tg/Tc is a measure of ability to maintian recombiation rate during aging
 
 
-```{r}
-rm( list = ls() );
-setwd("~/github/LOH_H2O2_2016/analysis")
-```
+
 
 Load 2013 H2O2-LOH results
 ```{r}
