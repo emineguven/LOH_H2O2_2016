@@ -19,7 +19,7 @@ Use 2013 fitting results and gnls reults:
 
 Partial correlations are all negative, what does this mean? Of couse, they should be negative correlations. 
 
- Tg/Tc is a measure of ability to maintian recombiation rate during aging
+Tg/Tc is a measure of ability to maintian recombiation rate during aging
 
 
 
@@ -30,7 +30,6 @@ Load 2013 H2O2-LOH results
  tb2 = read.csv("output/LOHH2O2_averaged20131210_v1.csv") 
 ```
 
- 
 Load previous LOH-CLS results, Qin Plos One 2008
 ```{r}
 #tb = read.table("summary.new.by.strain.csv", header=T, sep="\t");
@@ -49,31 +48,62 @@ Load previous LOH-CLS results, Qin Plos One 2008
 
 ```{r}
  summary(lm(Tg.vs.Tc ~ ARLS, data=tb.test)) #re-run the old results, just to double-check
- plot( tb.test$Tg.vs.Tc ~ tb.test$ARLS )
- text(tb.test$ARLS, tb.test$Tg.vs.Tc, tb.test$strains)
  summary(lm( 1/Tg.vs.Tc ~ ARLS, data=tb.test)) #good, negative, p=0.012 
+ plot( tb.test$Tg.vs.Tc ~ tb.test$ARLS, col='red', pch=19 )
+ text(tb.test$ARLS, tb.test$Tg.vs.Tc, tb.test$strains)
 ```
 
 
 Load exg06 data
- ```{r}
+```{r}
  nat = read.table("062705.rls.cls.tab", sep="\t", header=T, colClasses=c("character", rep(NA,4)) );
 ```
 
-Merge tb and tb2, and do some regression. 
+Merge tb and tb2. The merged table is 'tb3' 
 ```{r}
  tb2$strain = tb2$strains
  #tb3a = merge(tb, tb2, by='strain', all=T)
  tb3 = merge(tb, tb2, by='strain')
  tb3 = tb3[ , -(grep('strains', names(tb3))) ]
  
- #remove BY4743, will increae p-value
- #tb3 = tb3[ tb3$strain != "BY4743", ]
- summary(lm(tb3$Cv.vs.Cb ~ tb3$ARLS)) #p 0.078
+ #remove BY4743 will left only natural isolates, but some pvalue will exceed 0.05 cutoff. 
+ #So, have to leave BY4743 in the data set, and do not claim natural variaitons. 
+ # tb3 = tb3[ tb3$strain != "BY4743", ]
+```
+
+Plot of Cb.vs.Cv ~ ARLS. The key conclusion. 
+```{r}
+ #summary(lm(tb3$Cv.vs.Cb ~ tb3$ARLS)) #p 0.078
  summary(lm(tb3$Cb.vs.Cv ~ tb3$ARLS)) #p 0.039
+ plot( tb3$Cb.vs.Cv ~ tb3$ARLS, col='blue', pch=19, xlab='ARLS', ylab='sensitive<= Cb/Cv => tolerant', xlim=c(22,38),ylim=c(-0.1,2.8) )
+ text(tb3$ARLS + 0.5, tb3$Cb.vs.Cv+0.1, tb3$strain)
+ m = lm(tb3$Cb.vs.Cv ~ tb3$ARLS )
+ abline(m, col='red', lty=2, lwd=2)
+ text(26, 2.0, "p=0.039, R2=0.36")
+```
 
- #summary(lm(  tb3$ARLS ~ tb3$CvManu * tb3$CbManu )) 
 
+Cb.vs.Cv ~ L0.all and L0.small. L0.small is no good, probably because L0.small has high level of noises? 
+```{r}
+ #summary(lm(1/ tb3$Cb.vs.Cv ~ tb3$L0.small)) # p =0.685
+ summary(lm( tb3$Cb.vs.Cv ~  tb3$L0.all)) # p=0.0079
+ plot( tb3$Cb.vs.Cv ~ tb3$L0.all, col='blue', pch=19, xlab='Better asymmetry <- L0 -> Worse asymmetry', ylab='sensitive <- Cb/Cv ->tolerant', xlim=c(0, 0.3),ylim=c(-0.1,2.5) )
+ text(tb3$L0.all + 0.01, tb3$Cb.vs.Cv+0.1, tb3$strain)
+ m = lm(tb3$Cb.vs.Cv ~ tb3$L0.all )
+ abline(m, col='red', lty=2, lwd=2)
+ text(0.1, 2.0, "p=0.0079 R2=0.56")
+```
+
+Try 1/L0. However, this may cause confusion when readers try to compare this study with Qin08PONE finding. 
+```{r}
+ #summary(lm(1/ tb3$Cb.vs.Cv ~ tb3$L0.small)) # p =0.685
+ summary(lm( tb3$Cb.vs.Cv ~  tb3$L0.all)) # p=0.0079
+ tb3$One.vs.L0.all = 1 / tb3$L0.all  #use 1/L0 maybe confusing. especially when peope try to compare Qin08 with this work.
+ summary(lm( tb3$Cb.vs.Cv ~  tb3$One.vs.L0.all)) # p=0.039
+ plot( tb3$Cb.vs.Cv ~ tb3$One.vs.L0.all, col='blue', pch=19, xlab=' 1/L0', ylab='Cb/Cv' )
+ text(tb3$One.vs.L0.all + 0.01, tb3$Cb.vs.Cv+0.1, tb3$strain)
+ m = lm(tb3$Cb.vs.Cv ~ tb3$One.vs.L0.all )
+ abline(m, col='red', lty=2, lwd=2)
 ```
 
 
@@ -95,6 +125,17 @@ Merge tb and tb2, and do some regression.
  pTb[pTb<0.05]
 ```
 
+Cb0.5.vs.Cv ~ minimal full-black frequence in CLS. What does this mean?
+This correlation seems to hinge on YPS128. Decide not to use this correlation in the H2O2-LOH manuscript. 
+```{r}
+ summary(lm( tb3$Cb0.5.vs.Cv ~  tb3$b.min)) # p=0.036 ,R2=0.40
+ plot( tb3$Cb0.5.vs.Cv ~ tb3$b.min, col='blue', pch=19, xlim=c(-0.01, 0.025) )
+ text(tb3$b.min, tb3$Cb0.5.vs.Cv, tb3$strain)
+ m = lm(tb3$Cb0.5.vs.Cv  ~ tb3$b.min )
+ abline(m, col='red', lty=2, lwd=2)
+ text(0.1, 2.0, "p=0.036 R2=0.40")
+```
+
 ```{r}
  pTb = 1: length(tb3[1,])
  names(pTb) = names(tb3)
@@ -108,6 +149,28 @@ Merge tb and tb2, and do some regression.
  }
  pTb[pTb<0.1]
 ```
+
+Data consistency check 
+```{r}
+ summary(lm( tb3$CbMean ~  tb3$CvMean)) 
+ plot( tb3$CbMean ~ tb3$CvMean, col='blue', pch=19, xlim=c(0, 0.17), ylim=c(0,0.16) )
+ text(tb3$CvMean, tb3$CbMean, tb3$strain)
+ m = lm(tb3$CbMean  ~ tb3$CvMean )
+ abline(m, col='red', lty=2, lwd=2)
+
+ summary(lm( tb3$Cb0.5Mean ~  tb3$CvMean)) 
+ plot( tb3$Cb0.5Mean ~ tb3$CvMean, col='blue', pch=19, xlim=c(0, 0.17), ylim=c(0,0.16) )
+ text(tb3$CvMean, tb3$Cb0.5Mean, tb3$strain)
+ m = lm(tb3$Cb0.5Mean  ~ tb3$CvMean )
+ abline(m, col='red', lty=2, lwd=2)
+ 
+ summary(lm( tb3$Cb0.5Mean ~  tb3$CbMean)) 
+ plot( tb3$Cb0.5Mean ~ tb3$CbMean, col='blue', pch=19, xlim=c(0, 0.17), ylim=c(0,0.16) )
+ text(tb3$CbMean, tb3$Cb0.5Mean, tb3$strain)
+ m = lm(tb3$Cb0.5Mean  ~ tb3$CbMean )
+ abline(m, col='red', lty=2, lwd=2)
+```
+
 
 ```{r}
  pTb2 = 1: length(tb3[1,])
@@ -160,7 +223,7 @@ Merge tb and tb2, and do some regression.
 # tiff("plots/Figure_sideBYside20131209.tif", width=480, height=480)
  barplot( as.matrix(bins), beside=T, col=c("black","gray"), ylab="Relative Frequency", xlab="Ratios",
           legend= c( "Cb/Cv H2O2", "Tg/Tc CLS" )  );
- title(main="H2O2 and CLS trigger LOH at different modes" )
+ title(main="Contrasting LOH patterns in CLS and H2O2 treatment" )
 # dev.off(); 
 
  ks.test(tb3$Cb.vs.Cv, tb3$Tg.vs.Tc) #p=0.031
