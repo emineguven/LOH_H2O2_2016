@@ -8,7 +8,7 @@
 
 rm=(list=ls())
 #setwd("~/projects/LOH-oxidants2012.osX/analysis")
-setwd("~/github/LOH_H2O2_2012-master/analysis")
+setwd("~/github/LOH_H2O2_2016/analysis")
 debug = 0;
 
 FileList = list.files( path="../data.H2O2-LOH/");  FileList; 
@@ -16,6 +16,7 @@ if( debug > 5) {FileList = FileList[1:2]}
 
 #ListofFiles = list()
 Poisson_Results =list()
+Poisson_pValues = list()
 #tbAllfiles = list()
 for( infile in FileList) {
   
@@ -95,14 +96,25 @@ for( infile in FileList) {
     
   }
   
-    pois_halfBlack<-ppois(tb$halfBlack, mean(tb$halfBlack), lower.tail = T, log.p =F)
-   pois_quarterBlack<-ppois(tb$quarterBlack, mean(tb$quarterBlack), lower.tail = T, log.p =F)
-   pois_ThreeQBlack<-ppois(tb$ThreeQBlack, mean(tb$ThreeQBlack), lower.tail = T, log.p =F)
+    pois_halfBlack<-dpois(tb$halfBlack, mean(tb$halfBlack), log =F)
+   pois_quarterBlack<-dpois(tb$quarterBlack, mean(tb$quarterBlack), log =F)
+   pois_ThreeQBlack<-dpois(tb$ThreeQBlack, mean(tb$ThreeQBlack), log =F)
   
   Result_pois<-pois_halfBlack*pois_quarterBlack-pois_ThreeQBlack;
   
-  Poisson_Results[[length(Poisson_Results)+1]] = Result_pois;
+  for (i in 1:length(Result_pois)) {
+  if ( is.na(Result_pois[i])) { Result_pois[i] = 0 }
+  }
   
-} 
+  test_result<-t.test(Result_pois)$p.value
+  Poisson_Results[[length(Poisson_Results)+1]] = Result_pois;
+  Poisson_pValues[[length(Poisson_pValues)+1]] = test_result;
+  
+  } 
+
+ for (i in length(Poisson_pValues)){
+ m_pvalue<-sum(Poisson_pValues[[i]])/length(Poisson_pValues)
+ m_pvalue
+ }
 
 
