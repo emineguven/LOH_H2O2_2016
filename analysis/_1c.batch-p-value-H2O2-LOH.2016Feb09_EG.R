@@ -96,9 +96,17 @@ for( infile in FileList) {
     
   }
   
-    pois_halfBlack<-dpois(tb$halfBlack, mean(tb$halfBlack), log =F)
-   pois_quarterBlack<-dpois(tb$quarterBlack, mean(tb$quarterBlack), log =F)
-   pois_ThreeQBlack<-dpois(tb$ThreeQBlack, mean(tb$ThreeQBlack), log =F)
+    #normalization of the 1/2, 1/4 and 3/4 blacks of strains
+    normalized_tbHB = (tb$halfBlack-min(tb$halfBlack))/(max(tb$halfBlack)-min(tb$halfBlack))
+    normalized_tbQB = (tb$quarterBlack-min(tb$quarterBlack))/(max(tb$quarterBlack)-min(tb$quarterBlack))
+    normalized_tbTQB = (tb$ThreeQBlack-min(tb$ThreeQBlack))/(max(tb$ThreeQBlack)-min(tb$ThreeQBlack))
+    
+   #calculating the poisson distribution of each entry
+   pois_halfBlack<-ppois(normalized_tbHB, mean(normalized_tbHB), log =F)
+   pois_quarterBlack<-ppois(normalized_tbQB, mean(normalized_tbQB), log =F)
+   pois_ThreeQBlack<-ppois(normalized_tbTQB, mean(normalized_tbTQB), log =F)
+  
+   #that is what we like to test
   
   Result_pois<-pois_halfBlack*pois_quarterBlack-pois_ThreeQBlack;
   
