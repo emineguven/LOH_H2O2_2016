@@ -95,34 +95,41 @@ for( infile in FileList) {
     tbm$QQBlack[i] = mean(tmp$QQBlack, na.rm=T);  
     
   }
-  
+  normalized_tbHB = (tb$halfBlack-min(tb$halfBlack))/(max(tb$halfBlack)-min(tb$halfBlack))
+  normalized_tbQB = (tb$quarterBlack-min(tb$quarterBlack))/(max(tb$quarterBlack)-min(tb$quarterBlack))
+  normalized_tbTQB = (tb$ThreeQBlack-min(tb$ThreeQBlack))/(max(tb$ThreeQBlack)-min(tb$ThreeQBlack))
+    tb_TOTAL <- sum(tb$Black)+sum(tb$White)+sum(tb$halfBlack)+sum(tb$ThreeQBlack)+sum(tb$quarterBlack)+sum(tb$QQBlack)
+    tb_TOTALmulti = sum(tb$halfBlack)+sum(tb$ThreeQBlack)+sum(tb$quarterBlack)
+     Prob_halfBlack = sum(tb$halfBlack)/tb_TOTAL
+    Prob_quarterBlack = sum(tb$quarterBlack)/tb_TOTAL
+    Prob_ThreeQBlack = sum(tb$ThreeQBlack)/tb_TOTAL
+    Prob_joint1 = (sum(tb$halfBlack)+sum(tb$ThreeQBlack)+sum(tb$quarterBlack))/(factorial(sum(tb$halfBlack))*factorial(sum(tb$ThreeQBlack))* factorial(sum(tb$quarterBlack)))
+    Prob_jointAll = Prob_joint1* Prob_halfBlack^sum(tb$halfBlack)*Prob_quarterBlack ^sum(tb$quarterBlack)*Prob_ThreeQBlack^sum(tb$ThreeQBlack)
     #normalization of the 1/2, 1/4 and 3/4 blacks of strains
-    normalized_tbHB = (tb$halfBlack-min(tb$halfBlack))/(max(tb$halfBlack)-min(tb$halfBlack))
-    normalized_tbQB = (tb$quarterBlack-min(tb$quarterBlack))/(max(tb$quarterBlack)-min(tb$quarterBlack))
-    normalized_tbTQB = (tb$ThreeQBlack-min(tb$ThreeQBlack))/(max(tb$ThreeQBlack)-min(tb$ThreeQBlack))
     
+}
    #calculating the poisson distribution of each entry
-   pois_halfBlack<-ppois(normalized_tbHB, mean(normalized_tbHB), log =F)
-   pois_quarterBlack<-ppois(normalized_tbQB, mean(normalized_tbQB), log =F)
-   pois_ThreeQBlack<-ppois(normalized_tbTQB, mean(normalized_tbTQB), log =F)
+   #pois_halfBlack<-ppois(normalized_tbHB, mean(normalized_tbHB), log =F)
+   #pois_quarterBlack<-ppois(normalized_tbQB, mean(normalized_tbQB), log =F)
+   #pois_ThreeQBlack<-ppois(normalized_tbTQB, mean(normalized_tbTQB), log =F)
   
    #that is what we like to test
   
-  Result_pois<-pois_halfBlack*pois_quarterBlack-pois_ThreeQBlack;
+  #Result_pois<-pois_halfBlack*pois_quarterBlack-pois_ThreeQBlack;
   
-  for (i in 1:length(Result_pois)) {
-  if ( is.na(Result_pois[i])) { Result_pois[i] = 0 }
-  }
+  #for (i in 1:length(Result_pois)) {
+  #if ( is.na(Result_pois[i])) { Result_pois[i] = 0 }
+  #}
   
-  test_result<-t.test(Result_pois)$p.value
-  Poisson_Results[[length(Poisson_Results)+1]] = Result_pois;
-  Poisson_pValues[[length(Poisson_pValues)+1]] = test_result;
+  #test_result<-t.test(Result_pois)$p.value
+  #Poisson_Results[[length(Poisson_Results)+1]] = Result_pois;
+  #Poisson_pValues[[length(Poisson_pValues)+1]] = test_result;
   
-  } 
+  
 
- for (i in length(Poisson_pValues)){
- m_pvalue<-sum(Poisson_pValues[[i]])/length(Poisson_pValues)
- m_pvalue
- }
+ #for (i in length(Poisson_pValues)){
+ #m_pvalue<-sum(Poisson_pValues[[i]])/length(Poisson_pValues)
+ #m_pvalue
+ 
 
 
