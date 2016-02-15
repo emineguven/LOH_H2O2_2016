@@ -97,7 +97,7 @@ t = seq(0, 10, by=0.01)
 par(new=T)
 b = logistical.black( b.max, b.min, Tg, w, t)
 plot(b~t, log='', col="magenta", xlab='', ylab='',yaxt="n", xaxt ="n" ,type='l', lwd=4, ylim=c(b.min, 1.5*b.max))
-axis(4, pretty(range(b)))
+#axis(4, pretty(range(b)))
 points( Tg, (b.max+b.min)/2, pch=19, col="green", cex=1.2, lwd=4 );
 arrows( Tg, (b.max+b.min)/2, Tg, -1, lty=2, col="green", lwd=3);
 mtext( "Tg",side=1,at=c(Tg) );
