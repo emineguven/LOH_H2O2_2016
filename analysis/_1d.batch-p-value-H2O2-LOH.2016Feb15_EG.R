@@ -98,6 +98,8 @@ for( infile in FileList) {
   normalized = (TQB-min(TQB))/(max(TQB)-min(TQB))
   HQB<-tbf$halfBlack*tbf$quarterBlack
   normalized2 = (HQB-min(HQB))/(max(HQB)-min(HQB))
+  #find the standard error of multiplication
+  std_HQB<-sqrt(var(HQB)/length(HQB))
   
   #Histogram of  normalized data
   par(mfrow=c(1,3))
