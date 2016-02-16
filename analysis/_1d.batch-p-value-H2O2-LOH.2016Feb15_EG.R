@@ -14,10 +14,12 @@
 
 rm=(list=ls())
 #setwd("~/projects/LOH-oxidants2012.osX/analysis")
-setwd("~/github/LOH_H2O2_2012-master/analysis")
+setwd("~/github/LOH_H2O2_2016/analysis")
 debug = 0;
 
+
 FileList = list.files( path="../data.H2O2-LOH/");  FileList; 
+AllpValues=list()
 if( debug > 5) {FileList = FileList[1:2]}
 
 for( infile in FileList) {
@@ -92,6 +94,24 @@ for( infile in FileList) {
   
   tbf$Black[tbf$Black<0]=NA;  #remove weird experimental data, such as low-lead concentration effect
   
+  TQB<-tbf$ThreeQBlack
+  normalized = (TQB-min(TQB))/(max(TQB)-min(TQB))
+  HQB<-tbf$halfBlack*tbf$quarterBlack
+  normalized2 = (HQB-min(HQB))/(max(HQB)-min(HQB))
+  
+  #Histogram of  normalized data
+  par(mfrow=c(1,3))
+  hist(normalized,col="lightblue",xlab="ThreeQBlack",main="")
+  hist(normalized2,col="magenta",xlab="1/2*1/4",main="")
+  #histogram of joint data
+  hist(normalized,breaks=20,freq=F,col="lightblue",xlab="joint",main="")
+  #Histogram of normalized data
+  hist(normalized2,breaks=20,freq=F,col="magenta",add=T)
+  
+ 
+  
+  pvalue<-t.test(normalized2)$p.value
+  AllpValues[[length(AllpValues)+1]] = pvalue;
   
   
   
