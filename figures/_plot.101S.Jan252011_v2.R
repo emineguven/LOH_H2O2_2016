@@ -150,7 +150,7 @@ arrows( tbf$H2O2, (tbf$Black - tbf$Black.sd), tbf$H2O2, (tbf$Black + tbf$Black.s
 lines( fit.b ~ t2, lty=1, col='black');
 points ( Cb,  ( b.max/2 + b.min/2), pch=15, col="red", cex=1.2);
 arrows( Cb, (b.max/2 + b.min/2), Cb, 1E-8, lty=2, col="red", length=0.1);
-mtext( "Cb",side=1,at=c(Cb*1.2), line=-1, cex=0.8 );
+mtext( "Cb",side=1,at=c(Cb*1.1), line=-1, cex=0.8 );
 box()
 
 
@@ -197,7 +197,7 @@ arrows( tbf$H2O2, (tbf$halfBlack - tbf$halfBlack.sd), tbf$H2O2, (tbf$halfBlack +
         length=0.1, angle=90,code=3, lty=2, lwd=1 );
 points ( Cb0.5,  ( b0.5.max/2 + b0.5.min/2), pch=15, col="red", cex=1.2);
 arrows( Cb0.5, (b0.5.max/2 + b0.5.min/2), Cb0.5, 1E-8, lty=2, col="red", length=0.1);
-mtext( "Cb0.5",side=1,at=c(Cb0.5*1.2),line=-1, cex=0.8 );
+mtext( "Cb0.5",side=1,at=c(Cb0.5*1.8),line=-1, cex=0.8 );
 
 
 

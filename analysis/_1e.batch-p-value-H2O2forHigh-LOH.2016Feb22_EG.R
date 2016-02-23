@@ -44,7 +44,9 @@ for( ii in 1:length(FileList)) {
   tb = tb[ ! is.na(tb$White), ]
   tb = tb[ ! is.na(tb$H2O2stock),]
   
-  tb <- tb[!(tb$H2O2stock>mean(tb$H2O2stock)),]
+  tb <- tb[ which(tb$H2O2stock<mean(tb$H2O2stock)),] 
+                           
+  
   
   
   
