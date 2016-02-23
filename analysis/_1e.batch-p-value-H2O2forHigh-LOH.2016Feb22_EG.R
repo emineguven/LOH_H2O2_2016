@@ -7,8 +7,8 @@ setwd("~/github/LOH_H2O2_2016/analysis")
 debug = 0;
 
 FileList = list.files( path="../data.H2O2-LOH/");  FileList; 
-output = data.frame(FileList)
-output$p_ttest = NA; 
+output_highH2O2 = data.frame(FileList)
+output_highH2O2$p_ttest = NA; 
 
 if( debug > 5) {FileList = FileList[1:6]}
 
@@ -34,11 +34,18 @@ for( ii in 1:length(FileList)) {
   #adjust for low-counts
   tb$Black[tb$Black<=0] = 0.5
   tb$halfBlack[tb$halfBlack<=0] = 0.5
+ 
   
   tb$H2O2 = tb$H2O2stock/2
   tb$tot = tb$White + tb$Black + tb$halfBlack + tb$quarterBlack + tb$ThreeQBlack + tb$QQBlack + tb$Other
+
   tb.ori = tb; 
+  
   tb = tb[ ! is.na(tb$White), ]
+  tb = tb[ ! is.na(tb$H2O2stock),]
+  
+  tb <- tb[!(tb$H2O2stock>mean(tb$H2O2stock)),]
+  
   
   
   tb$Dilution = tb$Dilution / tb$Dilution[1]
@@ -66,8 +73,10 @@ for( ii in 1:length(FileList)) {
   }
   
   tbm = tbm[tbm$tot>1, ] #remove plates with zero colonies
+ 
   
   ###### calculate fractions
+  
   tbf = tbm; 
   tbf$s = tbf$tot / max(tbf$tot)
   for ( j in 3:8) {
@@ -85,12 +94,12 @@ for( ii in 1:length(FileList)) {
   
   tt = t.test( tbf$ThreeQBlack, H0TQB, pairwise=T, alternative = "greater")
   print(tt)
-  output$p_ttest[ii] = tt$p.value
+  output_highH2O2$p_ttest[ii] = tt$p.value
   
   
   #pvalue<-t.test(normalized2)$p.value
   #AllpValues[[length(AllpValues)+1]] = pvalue;
 }
 
-head(output)
-write.csv(output, "__batch_ttest-threeQBlack.csv")
+head(output_highH2O2)
+write.csv(output_highH2O2, "__batch_ttest-threeQBlack.csv")

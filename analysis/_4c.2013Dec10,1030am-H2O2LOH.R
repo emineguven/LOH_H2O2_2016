@@ -185,11 +185,23 @@
  #summary(lm( tb3$Cv.vs.Cb ~ tb3$G ) )  #positive, p=0.20, 
  #summary(lm( tb3$Cb.vs.Cv ~ tb3$G ) )  #negative, p=0.25
  
+ #pdf(paste("plots/Overlayed scatter plot of Cb~Cv and Tg~Tc.pdf"), width=5, height=5)
+ tiff("plots/Overlayed scatter plot of Cb~Cv and Tg~Tc.tif",width=480,height=480)
+ par(font=2) 
+ plot( tb3$Cb.vs.Cv , pch = 19,col="blue",axes=F, xlab='', ylab='', type='p')
+ par(new=T)
+ plot(tb3$Tg.vs.Tc, pch=19,xlab='Number of observations of each',ylab='',col='red')
+ legend("topleft",legend=c("Cb~Cv","Tg~Tc"),col=c("red","blue"),pt.bg = c("red","blue"),pch = c(21,21),cex=0.8)
+ dev.off()
  
- 
- 
- 
-              
+ tiff("plots/Histogram plot of Cb~Cv and Tg~Tc.tif",width=480,height=480)
+ par(font=2) 
+ # Histogram Colored (blue and red)
+ hist(tb3$Cb.vs.Cv, col=rgb(1,0,0,0.5),xlim=c(0,3), ylim=c(0,5), xlab="Variable",main="Histogram for Cb/Cv and Tg/Tc ratio")
+ hist(tb3$Tg.vs.Tc, col=rgb(0,0,1,0.5), add=T)
+ legend("topright",legend=c("Cb/Cv","Tg/Tc","overlapped"),col=c("red","blue","purple"),fill=c("red", "blue","purple"),cex=0.8)
+ box()
+ dev.off()
 #quit("yes")
 
 ####
