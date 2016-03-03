@@ -207,10 +207,16 @@ ratio_Cb.vs.Cv_Tg.vs.Tc<- tb3$Cb.vs.Cv/tb3$Tg.vs.Tc
 hist(ratio_Cb.vs.Cv_Tg.vs.Tc,breaks=7,freq=7,xlim=c(0,2),ylim=c(0,5),c="gray")
 box()
 
-#Load 2013 H2O2-LOH results
-list.files(pattern="csv", path='old')
-tbRaw = read.csv("old/_ctl.tb_out.20130529.csv") 
-Cb.vs.Cv_p.value<-lm(tbRaw$Cb~tbRaw$Cv)
+
+CbManu.vs.CvManu_test <-lm(tb2$CbManu~tb2$CvManu)
+summary(CbManu.vs.CvManu_test)
+CbManu.vs.CvManu_test_rSquared<-summary(CbManu.vs.CvManu_test)$r.squared
+
+
+CbMean.vs.CvMean_test <-lm(tb2$CbMean~tb2$CvMean)
+summary(CbMean.vs.CvMean_test)
+CbMean.vs.CvMean_test_rSquared<-summary(CbMean.vs.CvMean_test)$r.squared
+
 
 
 #set.seed(1234)

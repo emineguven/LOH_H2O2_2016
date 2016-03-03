@@ -226,10 +226,14 @@ Data consistency check
  title(main="Contrasting LOH patterns in CLS and H2O2 treatment" )
 # dev.off(); 
 
- ks.test(tb3$Cb.vs.Cv, tb3$Tg.vs.Tc) #p=0.031
+ ```
  
-  
-# tiff("plots/ARLS-CbCv-20131209.tif",width=480,height=480)
+```{r} 
+ ks.test(tb3$Cb.vs.Cv, tb3$Tg.vs.Tc) #p=0.031
+ ```
+ 
+```{r}
+#tiff("plots/ARLS-CbCv-20131209.tif",width=480,height=480)
  par(font=2) 
  plot( tb3$ARLS ~ tb3$Cb.vs.Cv , pch=19, col="red", main="H2O2-LOH ~ ARLS, 20131209", ylim=c(22,38), xlim=c(0.1, 2.5)
        , ylab='ARLS',xlab='Cb/Cv Tolerance to H2O2-induced genomic instability')
@@ -240,8 +244,11 @@ Data consistency check
  text(1.75, 28,  "R2=0.36 p=0.039")
 # dev.off()
  
+ ```
+
  
-# tiff("plots/L0-CbCv-20131209.tif",width=480,height=480)
+ ```{r}
+ # tiff("plots/L0-CbCv-20131209.tif",width=480,height=480)
  par(font=2)
  plot( tb3$L0.all ~ tb3$Cb.vs.Cv , pch=19, col="red", main="H2O2-LOH ~ mitotic asymmetry, 20131209"
        ,xlim=c(0.1,2.5),ylim=c(0.28, 0.05)
@@ -251,11 +258,60 @@ Data consistency check
  abline( m, col="blue")
  summary(m)
  text(0.8, 0.25, "R2=0.56 p=0.008")
-# dev.off()
  
- 
- ### Cv/Cb or Cb/Cv ~ robustness? I need a positive proxy
- #summary(lm( tb3$Cv.vs.Cb ~ tb3$G ) )  #positive, p=0.20, 
- #summary(lm( tb3$Cb.vs.Cv ~ tb3$G ) )  #negative, p=0.25
+ ```
+ ```{r}
+ #pdf(paste("plots/Overlayed scatter plot of Cb~Cv and Tg~Tc.pdf"), width=5, height=5)
+#tiff("plots/Scatterplot of Cb.vs.Cv and Tg.vs.Tc ratio.tif",width=480,height=480)
+par(font=2) 
+plot(tb3$Cb.vs.Cv ~tb3$Tg.vs.Tc, pch=19,col="red", main=''
+      ,ylab='Tg/Tc',xlab='Cb/Cv',
+xlim=c(0.5,2),ylim=c(0.1,2.0))
+abline(h=1,v=1)
+title("Cb/Cv vs Tg/Tc scatter plot", line = 3)
+text( tb3$Tg.vs.Tc+0.04,tb3$Cb.vs.Cv+0.09,  tb3$strain,cex=0.8)
+dev.off()
 ```
+
+```{r}
+
+
+
+#tiff("plots/Histogram plot of Cb.vs.Cv and Tg.vs.Tc.tif",width=480,height=480)
+par(font=2) 
+ratio_Cb.vs.Cv_Tg.vs.Tc<- tb3$Cb.vs.Cv/tb3$Tg.vs.Tc
+hist(ratio_Cb.vs.Cv_Tg.vs.Tc,breaks=7,freq=7,xlim=c(0,2),ylim=c(0,5),c="gray")
+box()
+
+```
+
+```{r}
+CbManu.vs.CvManu_test <-lm(tb2$CbManu~tb2$CvManu)
+summary(CbManu.vs.CvManu_test)
+
+```
+
+```{r}
+CbManu.vs.CvManu_test_rSquared<-summary(CbManu.vs.CvManu_test)$r.squared
+```
+
+
+
+```{r}
+
+CbMean.vs.CvMean_test <-lm(tb2$CbMean~tb2$CvMean)
+summary(CbMean.vs.CvMean_test)
+```
+
+```{r}
+CbMean.vs.CvMean_test_rSquared<-summary(CbMean.vs.CvMean_test)$r.squared
+```
+
+
+
+
+dev.off()
+ 
+
+
 
