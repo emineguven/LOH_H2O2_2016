@@ -19,6 +19,10 @@ setwd("~/github/LOH_H2O2_2016/analysis")
 list.files(pattern="csv", path='output')
 tb2 = read.csv("output/LOHH2O2_averaged20131210_v1.csv") 
 
+
+
+
+
 ##### #Load previous LOH-CLS results, Qin Plos One 2008
 # tb = read.table("summary.new.by.strain.csv", header=T, sep="\t");
 tb = read.table("021307.summary.by.strain.csv", header=T, sep="\t");
@@ -170,7 +174,7 @@ dev.off()
 
 tiff("plots/L0-CbCv-20131209.tif",width=480,height=480)
 par(font=2)
-plot( tb3$L0.all ~ tb3$Cb.vs.Cv , pch=19, col="red", main="H2O2-LOH ~ mitotic asymmetry, 20131209"
+plot( tb3$L0.all ~tb3$Cb.vs.Cv , pch=19, col="red", main="H2O2-LOH ~ mitotic asymmetry, 20131209"
       ,xlim=c(0.1,2.5),ylim=c(0.28, 0.05)
       , ylab='L0.all mitotic asymmetry',xlab='Cb/Cv Tolerance to H2O2-induced genomic instability')
 text( tb3$Cb.vs.Cv+0.09, tb3$L0.all+0.008,tb3$strain)
@@ -185,28 +189,36 @@ dev.off()
 #summary(lm( tb3$Cv.vs.Cb ~ tb3$G ) )  #positive, p=0.20, 
 #summary(lm( tb3$Cb.vs.Cv ~ tb3$G ) )  #negative, p=0.25
 
+
 #pdf(paste("plots/Overlayed scatter plot of Cb~Cv and Tg~Tc.pdf"), width=5, height=5)
-tiff("~/plots/Scatterplot of Cb~Cv and Tg~Tc.tif",width=480,height=480)
+tiff("plots/Scatterplot of Cb.vs.Cv and Tg.vs.Tc ratio.tif",width=480,height=480)
 par(font=2) 
-plot( tb3$ARLS ~ tb3$Cb.vs.Cv , pch=19, col="red", main="H2O2-LOH ~ ARLS", ylim=c(22,38), xlim=c(0.1, 2.5)
-      ,ylab='ARLS',xlab='Tolerance to H2O2-induced genomic instability')
-text( tb3$Cb.vs.Cv+0.08, tb3$ARLS+0.5, tb3$strain,cex = .6)
-segments(x0=-0.18,y0=20,x1=2.5,y1=40)
-par(new=T)
-plot( tb3$ARLS ~ tb3$Tg.vs.Tc, pch=19,col="green", xlab ='',ylab='',ylim=c(22,38), xlim=c(0.1, 2.5))
-text( tb3$Tg.vs.Tc+0.08, tb3$ARLS+0.5, tb3$strain,cex = .6)
-legend("topleft",legend=c("Cb~Cv","Tg~Tc"),col=c("red","green"),pt.bg = c("red","green"),pch = c(21,21),cex=0.8)
+plot(tb3$Cb.vs.Cv ~tb3$Tg.vs.Tc, pch=19,col="red", main=''
+      ,ylab='Tg/Tc',xlab='Cb/Cv',
+xlim=c(0.5,2),ylim=c(0.1,2.0))
+abline(h=1,v=1)
+title("Cb/Cv vs Tg/Tc scatter plot", line = 3)
+text( tb3$Tg.vs.Tc+0.04,tb3$Cb.vs.Cv+0.09,  tb3$strain,cex=0.8)
 dev.off()
 
-tiff("plots/Histogram plot of Cb~Cv and Tg~Tc.tif",width=480,height=480)
+tiff("plots/Histogram plot of Cb.vs.Cv and Tg.vs.Tc.tif",width=480,height=480)
 par(font=2) 
+ratio_Cb.vs.Cv_Tg.vs.Tc<- tb3$Cb.vs.Cv/tb3$Tg.vs.Tc
+hist(ratio_Cb.vs.Cv_Tg.vs.Tc,breaks=7,freq=7,xlim=c(0,2),ylim=c(0,5),c="gray")
+box()
 
-set.seed(1234)
-dat <- data.frame(cond = factor(rep(c("Cb~Cv","Tg~Tc"), each=12)), 
-                  values = c(tb3$Cb.vs.Cv,tb3$Tg.vs.Tc))
-library(ggplot2)
+#Load 2013 H2O2-LOH results
+list.files(pattern="csv", path='old')
+tbRaw = read.csv("old/_ctl.tb_out.20130529.csv") 
+Cb.vs.Cv_p.value<-lm(tbRaw$Cb~tbRaw$Cv)
+
+
+#set.seed(1234)
+#dat <- data.frame(cond = factor(rep(c("Cb~Cv","Tg~Tc","Cb~Cv/Tg~Tc"), each=12)), 
+#values = c(tb3$Cb.vs.Cv,tb3$Tg.vs.Tc,r))
+#library(ggplot2)
 # Interleaved histograms
-ggplot(dat, aes(x=values, fill=cond)) +geom_histogram(binwidth=.3, position="dodge")
+#ggplot(dat, aes(x=values, fill=cond)) +geom_histogram(binwidth=.3, position="dodge")
 
 
 dev.off()

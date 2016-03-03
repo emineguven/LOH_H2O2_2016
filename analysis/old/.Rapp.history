@@ -1,0 +1,2 @@
+load("/Users/eguven/github/LOH_H2O2_2016/analysis/old/020807.loh.new.csv.RData")
+load("/Users/eguven/github/LOH_H2O2_2016/analysis/old/020807.mean.by.strain.RData")

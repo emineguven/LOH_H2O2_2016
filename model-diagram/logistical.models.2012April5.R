@@ -41,7 +41,7 @@ dev.off()
 
 Tg = 5.5
 Tc = 5
-t = seq(0, 10, by=0.01)
+
 w = 5;
                         
 ########
@@ -73,8 +73,12 @@ w = 2;
 
 par(mai=c(1,1,0.5,1))
 v = logistical.viability( Tv, w, t)
-plot( v ~ t, type='l', col='blue', xaxt = "n", log='x', xlim=c(0.001,0.5), xlab='H2O2 fraction OR days', ylab='viability', lwd=4)
+plot( v ~ t, type='l', col='blue', xaxt = "n", log='x', xlim=c(0.001,0.5), xlab='LOH-H2O2 or LOH-CLS', ylab='viability', lwd=4)
 
+points( Tv, 0.5, pch=19, col="blue", cex=1.2 );
+arrows( Tv, 0.5, Tv, -1, lty=2, col="blue");
+mtext( "Cv=Tc",cex=0.6,side=1,at=c(Tv) );
+mtext( 'black percentage', side=4, line=3 ) #2012 July 28 change
 par(new=T)          
 Tg = 5.5
 Tc = 5
@@ -85,11 +89,16 @@ b.max = 0.04; b.min = 0.002;
 b = logistical.black( b.max, b.min, Tb, w, t)
 plot( b ~ t, log='x', axes=F, xlab='', ylab='', yaxt= "n",xaxt = "n",type='l', lwd=4, ylim=c(b.min, 1.5*b.max))
 axis(4, pretty(range(b)))
-points( Tb, (b.max+b.min)/2, pch=19, col="green", cex=1.2 );
-arrows( Tb, (b.max+b.min)/2, Tb, -1, lty=2, col="green", lwd=3);
-mtext( "Cb",side=1,at=c(Tb) );
+points( Tb, (b.max+b.min)/2, pch=19, col="black", cex=1.2 );
 
-Tg = 6.9
+arrows( Tb, (b.max+b.min)/2, Tb, -1, lty=2, col="black");
+mtext( "Cb",cex=0.6,side=1,at=c(Tb) );
+
+
+
+
+
+Tg = 7
 Tc = 5
 w = 5;
 b.max = 0.04; b.min = 0.002;
@@ -98,9 +107,10 @@ par(new=T)
 b = logistical.black( b.max, b.min, Tg, w, t)
 plot(b~t, log='', col="magenta", xlab='', ylab='',yaxt="n", xaxt ="n" ,type='l', lwd=4, ylim=c(b.min, 1.5*b.max))
 #axis(4, pretty(range(b)))
-points( Tg, (b.max+b.min)/2, pch=19, col="green", cex=1.2, lwd=4 );
-arrows( Tg, (b.max+b.min)/2, Tg, -1, lty=2, col="green", lwd=3);
-mtext( "Tg",side=1,at=c(Tg) );
-legend("topright",col=c("magenta","black","blue"),lty=1,legend=c("Days","H2O2","Viability"))
+points( Tg, (b.max+b.min)/2, pch=19, col="magenta", cex=1.2);
+arrows( Tg, (b.max+b.min)/2, Tg, -1, lty=2, col="magenta");
+mtext( "Tg",cex=0.6,side=1,at=c(Tg) );
+legend("topright",col=c("magenta","black","blue"),lty=1,legend=c("LOH-CLS","LOH-H2O2","Viability"),cex=0.6)
+
 dev.off()
 

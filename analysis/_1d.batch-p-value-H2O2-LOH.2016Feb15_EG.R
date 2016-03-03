@@ -93,4 +93,4 @@ for( ii in 1:length(FileList)) {
 }
 
 head(output)
-write.csv(output, "__batch_ttest-threeQBlack.csv")
+write.csv(output, "__batch_ttest-threeQBlack_lower.csv")
