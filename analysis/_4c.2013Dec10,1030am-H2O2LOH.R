@@ -174,14 +174,14 @@ dev.off()
 
 tiff("plots/L0-CbCv-20131209.tif",width=480,height=480)
 par(font=2)
-plot( tb3$L0.all ~tb3$Cb.vs.Cv , pch=19, col="red", main="H2O2-LOH ~ mitotic asymmetry, 20131209"
-      ,xlim=c(0.1,2.5),ylim=c(0.28, 0.05)
+plot( tb3$Cb.vs.Cv~ tb3$L0.all, pch=19, col="red", main="H2O2-LOH ~ mitotic asymmetry, 20131209"
+      ,ylim=c(0.1,2.5),xlim=c(0.28, 0.05)
       , ylab='L0.all mitotic asymmetry',xlab='Cb/Cv Tolerance to H2O2-induced genomic instability')
-text( tb3$Cb.vs.Cv+0.09, tb3$L0.all+0.008,tb3$strain)
-m = lm( tb3$L0.all ~ tb3$Cb.vs.Cv  )
+text( tb3$Cb.vs.Cv+0.15, tb3$L0.all+0.009,tb3$strain)
+m = lm( tb3$Cb.vs.Cv ~ tb3$L0.all )
 abline( m, col="blue")
 summary(m)
-text(0.8, 0.25, "R2=0.56 p=0.008")
+text(0.8, 0.25, "R2=0.56 p=0.008",font=4)
 dev.off()
 
 
@@ -193,12 +193,12 @@ dev.off()
 #pdf(paste("plots/Overlayed scatter plot of Cb~Cv and Tg~Tc.pdf"), width=5, height=5)
 tiff("plots/Scatterplot of Cb.vs.Cv and Tg.vs.Tc ratio.tif",width=480,height=480)
 par(font=2) 
-plot(tb3$Cb.vs.Cv ~tb3$Tg.vs.Tc, pch=19,col="red", main=''
-      ,ylab='Tg/Tc',xlab='Cb/Cv',
+plot(tb3$Cb.vs.Cv ~tb3$Tg.vs.Tc, pch=19,col="red", main='Cb/Cv vs Tg/Tc scatter plot'
+      ,ylab='Tg/Tc',xlab='Cb/Cv', cex.lab=1.2, font.lab=2,
 xlim=c(0.5,2),ylim=c(0.1,2.0))
 abline(h=1,v=1)
 title("Cb/Cv vs Tg/Tc scatter plot", line = 3)
-text( tb3$Tg.vs.Tc+0.04,tb3$Cb.vs.Cv+0.09,  tb3$strain,cex=0.8)
+text( tb3$Tg.vs.Tc+0.04,tb3$Cb.vs.Cv+0.09,  tb3$strain,cex=1)
 dev.off()
 
 tiff("plots/Histogram plot of Cb.vs.Cv and Tg.vs.Tc.tif",width=480,height=480)
