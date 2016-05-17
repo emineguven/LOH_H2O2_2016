@@ -193,12 +193,12 @@ Cb0.5 = 0.00125
 #par(new=T)
 par(mar=c(5,5,0,1))
 #plot( tbf$halfBlack ~ tbf$H2O2, pch=16, xlab='H2O2',ylab="half-black", col='red')
-plot( b0.5 ~ t, pch=16, xlab='H2O2',ylab="Half-black", col='black', log='y', ylim=c(0.8E-3,0.15), axes=F)
+plot( b0.5 ~ t, pch=16, xlab='H2O2',ylab="Half-black", col='green', log='y', ylim=c(0.8E-3,0.15), axes=F)
 axis( 1, at = pretty(t), labels=T, tcl=0.3);
 #axis( 2, at = c(0.001,0.01,0.05,0.1), labels=T, tcl=0.2, las=2);
 axis( 2, at = c(0.001,0.01,0.05,0.1), labels=c(0.001,0.01,0.05,0.1), tcl=0.2, las=2);
 box()
-lines(fit.b0.5 ~ t2, col='black')
+lines(fit.b0.5 ~ t2, col='green')
 arrows( tbf$H2O2, (tbf$halfBlack - tbf$halfBlack.sd), tbf$H2O2, (tbf$halfBlack + tbf$halfBlack.sd),
         length=0.1, angle=90,code=3, lty=2, lwd=1 );
 points ( Cb0.5,  ( b0.5.max/2 + b0.5.min/2), pch=15, col="red", cex=1.2);
